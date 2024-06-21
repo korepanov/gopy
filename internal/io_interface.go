@@ -5,16 +5,12 @@ import (
 	"os"
 )
 
-const chunkSize = 1024
-
-type Command struct {
-	Input  string
-	Tokens []string
-}
-
-func (c *Command) NextCommand() {
+func (p *Program) nextCommand() {
 
 	s := bufio.NewScanner(os.Stdin)
 	s.Scan()
+	var c Command
 	c.Input = s.Text()
+	c.
+		p.InputProgram = p.InputProgram.append(p.InputProgram)
 }
