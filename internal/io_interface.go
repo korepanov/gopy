@@ -15,7 +15,12 @@ func (p *Program) ReadProgram() {
 }
 
 func (p *Program) WriteProgram() {
-	fmt.Println("ELF")
+	for _, command := range p.input {
+		for _, token := range command.tokens {
+			fmt.Print(token.lexeme + " ; ")
+		}
+		fmt.Println()
+	}
 }
 
 // reads next command in the command input

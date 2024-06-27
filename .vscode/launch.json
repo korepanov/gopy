@@ -15,8 +15,8 @@
             "dlvFlags": [
                 "-r",
                 "stdin:${workspaceFolder}/program.py",
-                "-r",
-                "stdout:${workspaceFolder}/program"
+                //"-r",
+                //"stdout:${workspaceFolder}/program"
             ]
         }
     ]
