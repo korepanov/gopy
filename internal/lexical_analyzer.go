@@ -1,14 +1,10 @@
 package internal
 
 func (c *command) lexicalAnalyze() {
-	var token1 token
-	var token2 token
+	var lexeme string
 
-	token1.lexeme = "("
-	token1.t = delimiter
+	for _, ch := range c.input {
+		lexeme += string(ch)
 
-	token2.lexeme = "print"
-	token2.t = builtinFunction
-
-	c.tokens = []token{token1, token2}
+	}
 }
