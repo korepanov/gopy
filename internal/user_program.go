@@ -1,25 +1,24 @@
 package internal
 
 type Program struct {
-	InputProgram []Command
+	input []command
 }
 
-type Command struct {
-	Input  string
-	Tokens []Token
+type command struct {
+	input  string
+	tokens []token
 }
 
-type Token struct{
-	Lexeme string 
-	T 
-}
-type LexemeType string 
-
-const {
-	delimiter
-
+type token struct {
+	lexeme string
+	t      lexemeType
 }
 
-type Delimiter struct{
-	
-}
+type lexemeType int
+
+const (
+	delimiter lexemeType = iota
+	builtinFunction
+	userName
+	keyword
+)
