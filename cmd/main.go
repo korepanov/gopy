@@ -6,6 +6,11 @@ import (
 
 func main() {
 	var p internal.Program
-	p.ReadProgram()
+	err := p.ReadProgram()
+
+	if err != nil {
+
+	}
+
 	p.WriteProgram()
 }

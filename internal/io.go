@@ -6,18 +6,27 @@ import (
 	"os"
 )
 
-func (p *Program) ReadProgram() {
+func (p *Program) ReadProgram() error {
 	s := bufio.NewScanner(os.Stdin)
 
 	for p.nextCommand(s) {
-		p.input[len(p.input)-1].lexicalAnalyze()
 	}
+
+	return nil
+}
+
+func (p *Program) LexicalAnalyze() error {
+	for idx, c := range p.input {
+		err := c.lexicalAnalyze()
+		return fmt.Errorf("%q : %q : %d\n%q", ErrCompile, err, idx+1)
+	}
+	return fmt.Errorf("%q : %q", ErrReadProgram, err)
 }
 
 func (p *Program) WriteProgram() {
 	for _, command := range p.input {
 		for _, token := range command.tokens {
-			fmt.Print(token.lexeme + " ; ")
+			fmt.Print(token.lex + " ; ")
 		}
 		fmt.Println()
 	}
