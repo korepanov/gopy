@@ -5,6 +5,6 @@ func (c *command) lexicalAnalyze() {
 
 	for _, ch := range c.input {
 		lexeme += string(ch)
-
+		lexemeType := dictionary().Find(lexeme)
 	}
 }
