@@ -52,6 +52,7 @@ func (c *Command) nextToken() (Token, error) {
 
 			if bufType != 0 {
 				newToken.Lex = lexeme(buf)
+				newToken.T = bufType
 				c.subinput = c.subinput[len(newToken.Lex):]
 				break
 			}
