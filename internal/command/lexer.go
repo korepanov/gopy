@@ -26,7 +26,7 @@ func (c *Command) lookAhead() (Token, error) {
 	return Token{Lex: lexeme(buf), T: 0}, cerrors.ErrNoToken
 }
 
-// gets next longest token and removes this token from input
+// gets next longest token and removes this token from subinput
 func (c *Command) nextToken() (Token, error) {
 
 	newToken, err := c.lookAhead()
