@@ -6,7 +6,7 @@ import (
 	"github.com/korepanov/gopy/internal/cerrors"
 )
 
-// looks ahead to the next shortest token but does not remove the token from input
+// looks ahead to the next shortest token but does not remove the token from subinput
 func (c *Command) lookAhead() (Token, error) {
 	var buf string
 
