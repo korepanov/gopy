@@ -1,4 +1,4 @@
-package internal
+package cerrors
 
 import "errors"
 

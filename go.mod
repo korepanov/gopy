@@ -1,3 +1,3 @@
-module gopy.com
+module github.com/korepanov/gopy
 
 go 1.17
