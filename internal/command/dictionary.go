@@ -7,14 +7,21 @@ const (
 	Keyword
 	Operator
 	Escape
+	QuotedString
 )
 
-func Dictionary() (d struct {
+var d dictionary
+
+type dictionary struct {
 	dictionaryValues map[lexemeType][]lexeme
 	stopList         []lexemeType
+	lexemeToFind     lexeme
 	IsStop           func(t lexemeType) bool
 	Find             func(lex lexeme) lexemeType
-}) {
+}
+
+func Dictionary() dictionary {
+
 	d.dictionaryValues = make(map[lexemeType][]lexeme)
 	d.dictionaryValues[BuiltinFunction] = []lexeme{"print", "len"}
 	d.dictionaryValues[Delimiter] = []lexeme{"(", ")", "[", "]", " ", "    "}
@@ -30,8 +37,15 @@ func Dictionary() (d struct {
 
 	d.dictionaryValues[Escape] = []lexeme{" ", "\n", "\t", "\r"}
 	d.stopList = []lexemeType{Delimiter, Operator}
+	d.dictionaryValues[QuotedString] = func() []lexeme {
+		if len(d.lexemeToFind) > 1 && d.lexemeToFind[0] == '"' && d.lexemeToFind[len(d.lexemeToFind)-1] == '"' {
+			return []lexeme{d.lexemeToFind}
+		}
+		return []lexeme{}
+	}()
 
 	d.Find = func(lex lexeme) lexemeType {
+
 		for key, vals := range d.dictionaryValues {
 			for _, val := range vals {
 				if val == lex {
