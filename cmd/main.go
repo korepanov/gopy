@@ -5,29 +5,25 @@ import (
 	"os"
 
 	"github.com/korepanov/gopy/internal/cerrors"
-	"github.com/korepanov/gopy/internal/flagparse"
-	"github.com/korepanov/gopy/internal/program"
+	"github.com/korepanov/gopy/internal/dispatcher"
 )
 
 func main() {
-	err := flagparse.ProcessFlags()
+	d, err := dispatcher.NewDispatcher()
 
 	if err == cerrors.ErrHelp {
 		os.Exit(0)
 	}
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s : %s\n", cerrors.ErrCompile, err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	var p program.Program
-	err = p.ReadProgram()
+	err = d.Compile()
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s : %s\n", cerrors.ErrCompile, err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
-
-	p.WriteProgram()
 }
