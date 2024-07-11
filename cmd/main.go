@@ -9,18 +9,12 @@ import (
 )
 
 func main() {
-	d, err := dispatcher.NewDispatcher()
+
+	err := dispatcher.Compile()
 
 	if err == cerrors.ErrHelp {
 		os.Exit(0)
 	}
-
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	err = d.Compile()
 
 	if err != nil {
 		fmt.Println(err)

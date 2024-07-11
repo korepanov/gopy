@@ -16,7 +16,7 @@ type dispatcher struct {
 	input      program.Program
 }
 
-func NewDispatcher() (dispatcher, error) {
+func newDispatcher() (dispatcher, error) {
 	var d dispatcher
 
 	err := d.processFlags()
@@ -25,6 +25,44 @@ func NewDispatcher() (dispatcher, error) {
 	}
 
 	return d, nil
+}
+
+type compileErrorT struct {
+	err error
+}
+
+func Compile() error {
+	d, err := newDispatcher()
+
+	if err != nil {
+		return err
+	}
+
+	compileErr := d.compile()
+	return compileErr.err
+}
+
+func (d *dispatcher) compile() compileErrorT {
+
+	err := d.input.ReadProgram()
+
+	if err != nil {
+		return d.compileError(err)
+	}
+
+	d.input.WriteProgram()
+
+	return compileErrorT{}
+}
+
+func (d *dispatcher) compileError(err error) compileErrorT {
+	d.outputFile.Close()
+	os.Remove(d.outputFile.Name())
+	os.Stdout = d.stdout
+
+	var res compileErrorT
+	res.err = fmt.Errorf("%s : %s", cerrors.ErrCompile, err)
+	return res
 }
 
 var help = flag.Bool("h", false, "show help")
@@ -73,36 +111,4 @@ func (d *dispatcher) processFlags() error {
 	d.outputFile = os.Stdout
 
 	return nil
-}
-
-type compileErrorT struct {
-	err error
-}
-
-func (d *dispatcher) compileError(err error) compileErrorT {
-	d.outputFile.Close()
-	os.Remove(d.outputFile.Name())
-	os.Stdout = d.stdout
-
-	var res compileErrorT
-	res.err = fmt.Errorf("%s : %s", cerrors.ErrCompile, err)
-	return res
-}
-
-func (d *dispatcher) compile() compileErrorT {
-
-	err := d.input.ReadProgram()
-
-	if err != nil {
-		return d.compileError(err)
-	}
-
-	d.input.WriteProgram()
-
-	return compileErrorT{}
-}
-
-func (d *dispatcher) Compile() error {
-	compileErr := d.compile()
-	return compileErr.err
 }
