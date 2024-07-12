@@ -10,17 +10,12 @@ const (
 	QuotedString
 )
 
-var d dictionary
-
-type dictionary struct {
+func Dictionary() (d struct {
 	dictionaryValues map[lexemeType][]lexeme
 	stopList         []lexemeType
-	lexemeToFind     lexeme
 	IsStop           func(t lexemeType) bool
 	Find             func(lex lexeme) lexemeType
-}
-
-func Dictionary() dictionary {
+}) {
 
 	d.dictionaryValues = make(map[lexemeType][]lexeme)
 	d.dictionaryValues[BuiltinFunction] = []lexeme{"print", "len"}
@@ -37,12 +32,6 @@ func Dictionary() dictionary {
 
 	d.dictionaryValues[Escape] = []lexeme{" ", "\n", "\t", "\r"}
 	d.stopList = []lexemeType{Delimiter, Operator}
-	d.dictionaryValues[QuotedString] = func() []lexeme {
-		if len(d.lexemeToFind) > 1 && d.lexemeToFind[0] == '"' && d.lexemeToFind[len(d.lexemeToFind)-1] == '"' {
-			return []lexeme{d.lexemeToFind}
-		}
-		return []lexeme{}
-	}()
 
 	d.Find = func(lex lexeme) lexemeType {
 
@@ -52,6 +41,10 @@ func Dictionary() dictionary {
 					return key
 				}
 			}
+		}
+
+		if len(lex) > 1 && lex[0] == '"' && lex[len(lex)-1] == '"' {
+			return QuotedString
 		}
 
 		return 0
@@ -66,5 +59,5 @@ func Dictionary() dictionary {
 		return false
 	}
 
-	return d
+	return
 }
